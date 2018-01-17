@@ -2,12 +2,43 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Bailey's Github Page</title>
+    <title>One More Kill</title>
     <style type="text/css">
-        
+        ::-moz-selection{
+            background-color:Transparent;
+            color:#000;
+        }
+
+        ::selection {
+            background-color:Transparent;
+            color:#000;
+        }
+        canvas {
+            position: absolute;
+            border: 1px solid black;
+        }
+        .html-on-canvas {
+            position: absolute; 
+            width: 100%;
+            height: 100%;
+            text-align: left;
+            font-family: Monospace; 
+        }
+        html, body {
+            width: 100%;
+            height: 100%;    
+            margin: 0px;
+        }
+        ::-webkit-scrollbar { 
+            display: none; 
+        }
     </style>
 </head>
 <body>
-    <h1>test</h1>
+    <canvas></canvas>
+    <script src='one-more-kill.js'></script>
+    <div class='html-on-canvas'>
+        <h1>One More Kill - Not even in pre-alpha, as fresh as it's gonna get</h1>
+    </div>
 </body>
 </html>
