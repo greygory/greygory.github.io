@@ -1,19 +1,28 @@
 // Startup
 
 const canvas = document.querySelector('canvas');
-const c = canvas.getContext('2d');
+const ctx = canvas.getContext('2d');
 
 canvas.width = innerWidth;
 canvas.height = innerHeight;
 
 // Variables
 var move = 0;
+var speed = 3;
+var maxRadius = 30;
+var mouseToCircle = 120; // distance from mouse to circle to instantiate radius growing
 
 var key = 'None'
-
+var mouse = {
+    x: canvas.width/2,
+    y: canvas.height/2
+}
 var player = {
-    x: 0,
-    y: 0
+    x: canvas.width/2,
+    y: canvas.height/2,
+    width: 50,
+    height: 50,
+    radians: 0,
 }
 var key = ['W', 'A', 'S', 'D'];
 var pressed_key = ['','','',''];
@@ -23,6 +32,10 @@ var fpsInterval = lastLoop;
 var fpsDisplay = 0;
 
 // Event Listeners
+addEventListener('mousemove', function (event) {
+    mouse.x = event.clientX;
+    mouse.y = event.clientY;
+});
 
 addEventListener('resize', () => {
     canvas.width = innerWidth;
@@ -46,19 +59,31 @@ addEventListener('keyup', event => {
 })
 
 //game functions
+function DrawPlayer(radians){
+    ctx.save();
+    ctx.translate(player.x, player.y);
+    ctx.rotate(radians);
+    ctx.strokeRect(-player.width/4, -player.height/4, 25, 25)
+    ctx.draw
+    ctx.restore();
+}
+function Rotate(){
+    player.radians = Math.atan((player.y + player.height - mouse.y)/(player.x - player.width - mouse.x));
+}
+
 function PlayerMovement(){
     for(let i=0;i<4;i++){
         if(pressed_key[i] == 'KeyW'){
-            player.y -= 10;
+            player.y -= speed;
         }
         if(pressed_key[i] == 'KeyA'){
-            player.x -= 10;
+            player.x -= speed;
         }
         if(pressed_key[i] == 'KeyS'){
-            player.y += 10;
+            player.y += speed;
         }
         if(pressed_key[i] == 'KeyD'){
-            player.x += 10;
+            player.x += speed;
         }
     }
 }
@@ -76,12 +101,14 @@ function FpsCount() {
 function Animate() {
     FpsCount();
     requestAnimationFrame(Animate);
-    c.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     PlayerMovement();
-    c.font = '20px Georgia';
-    c.fillText(fpsDisplay+' fps', 30, 100)
-    c.fillRect(player.x, player.y, 50, 50);
-    
+    ctx.font = '20px Georgia';
+    ctx.fillText(fpsDisplay+' fps', 30, 100);
+    DrawPlayer(player.radians);
+    for(var i = 0; i < enemyArray.length; i++) {
+        enemyArray[i].update();
+    }
 }
-
+init();
 Animate();
